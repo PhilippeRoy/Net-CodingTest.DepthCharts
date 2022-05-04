@@ -31,6 +31,7 @@ namespace CodingTest.DepthCharts.Models
                 else
                 {
                     // If no position_depth is provided, then add them to the end of the depth chart for that position.
+                    // If you are entering two players into the same slot, the last player entered gets priority and bumps the existing player down a depth spot.
                     values.Add(player);
                 }
             }
@@ -73,6 +74,8 @@ namespace CodingTest.DepthCharts.Models
             if (_chart.TryGetValue(position, out List<Player> values))
             {
                 var index = values.IndexOf(player);
+                
+                // Return string of comma seperated playerIds
                 var playerIds = string.Join(",", values.Skip(index + 1).Select(x => x.PlayerId));
 
                 sb.Append($"{position}: [{playerIds}]");
