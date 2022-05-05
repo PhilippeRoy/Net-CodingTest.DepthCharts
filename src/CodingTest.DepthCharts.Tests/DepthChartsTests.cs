@@ -94,6 +94,50 @@ namespace CodingTest.DepthCharts.Tests
                 // Assert
                 actual.Should().Be(expected);
             }
+            
+            [Fact]
+            public void AddPlayerToDepthChart_NegativePositionDepthProvided_AddToEndOfDepthChart()
+            {
+                // Arrange
+                StringBuilder sb = new StringBuilder();
+                sb.Append("QB: [50,90,1]");
+
+                var expected = sb.ToString();
+
+                var player1 = new Player()
+                {
+                    Name = "Player1",
+                    Position = Constants.NFLPositions.QB,
+                    PlayerId = 50
+                };
+                var player2 = new Player()
+                {
+                    Name = "Player2",
+                    Position = Constants.NFLPositions.QB,
+                    PlayerId = 90
+                };
+                var player3 = new Player()
+                {
+                    Name = "Player3",
+                    Position = Constants.NFLPositions.QB,
+                    PlayerId = 1
+                };
+
+                var chart = new DepthChart(new List<string>
+                {
+                    Constants.NFLPositions.QB
+                });
+
+                // Act
+                chart.AddPlayerToDepthChart(player1, Constants.NFLPositions.QB, -1);
+                chart.AddPlayerToDepthChart(player2, Constants.NFLPositions.QB);
+                chart.AddPlayerToDepthChart(player3, Constants.NFLPositions.QB, -5);
+
+                var actual = chart.GetFullDepthChart();
+
+                // Assert
+                actual.Should().Be(expected);
+            }
 
             [Fact]
             public void AddPlayerToDepthChart_EnteringTwoPlayersIntoTheSameSlot_LastPlayerEnteredGetsPriority()
